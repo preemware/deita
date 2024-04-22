@@ -1,16 +1,16 @@
 export WANDB_PROJECT="Deita-Scorers"
-MODELPATH="mistralai/Mistral-7B-v0.1"
+MODELPATH="meta-llama/Meta-Llama-3-8B"
 DATAPATH="/PATH/TO/SHAREGPT_FORMAT/DATA"
-MODEL_SIZE="7B"
-RUNNAME="Deita-7B-Scorers"
+MODEL_SIZE="8B"
+RUNNAME="Deita-8B-Scorers"
 OUTPUTPATH="/PATH/TO/OUTPUTS"
 TOTALBSZ=512
 BSZPERDEV=1
-DEVICES="0,1,2,3"
+DEVICES="0,1"
 NUMGPUS=$(echo $DEVICES | awk -F',' '{print NF}')
 GRADACC=$(($TOTALBSZ/$NUMGPUS/$BSZPERDEV))
 EPOCHNUM=6
-echo "Training mistral model ${MODEL_SIZE} using $NUM_GPUS GPUs, $BSZPERDEV batch size per GPU, $GRADACC gradient accumulation steps"
+echo "Training llama-3-8b model ${MODEL_SIZE} using $NUM_GPUS GPUs, $BSZPERDEV batch size per GPU, $GRADACC gradient accumulation steps"
 
 deepspeed --include localhost:$DEVICES --master_port 29502 src/deita/alignment/train_scorers.py \
     --model_name_or_path ${MODELPATH} \
